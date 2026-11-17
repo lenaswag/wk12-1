@@ -1,0 +1,1035 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Day We Stopped Talking | Interactive Reading</title>
+<style>
+:root{
+  --bg:#fffaf4;--paper:#fff;--ink:#34313d;--muted:#77717d;
+  --pink:#f5c8cf;--rose:#b65f79;--peach:#ffe6d5;
+  --blue:#e7f0fc;--navy:#45658c;--line:#eee4df;
+  --yellow:#fff0bc;--shadow:0 8px 30px rgba(76,52,62,.08);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+font-family:"Segoe UI",Arial,sans-serif;font-size:17px;line-height:1.65}
+button,textarea,select{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.45;cursor:not-allowed}
+.hidden{display:none!important}
+header{background:#fff;border-bottom:1px solid var(--line);
+padding:13px max(20px,calc((100vw - 1100px)/2));
+display:flex;justify-content:space-between;align-items:center;gap:15px}
+.logo{font-weight:800;color:var(--rose);font-size:19px}
+.header-right{font-size:13px;color:var(--muted)}
+main{max-width:1100px;margin:auto;padding:25px 18px 65px}
+.card{background:var(--paper);border:1px solid var(--line);
+border-radius:22px;padding:25px;box-shadow:var(--shadow);margin-bottom:20px}
+h1,h2,h3{line-height:1.3;margin:0 0 15px}
+h1{font-size:34px}h2{font-size:25px}h3{font-size:20px}
+p{margin:9px 0 15px}
+.small{font-size:14px;color:var(--muted)}
+.eyebrow{font-size:13px;font-weight:800;letter-spacing:1.5px;
+text-transform:uppercase;color:var(--rose)}
+.center{text-align:center}
+.btn{border:0;border-radius:12px;padding:12px 20px;font-weight:700;
+background:var(--rose);color:white;transition:.15s}
+.btn:hover:not(:disabled){filter:brightness(.96);transform:translateY(-1px)}
+.btn.secondary{background:var(--blue);color:var(--navy)}
+.btn.outline{background:white;color:var(--rose);border:2px solid var(--pink)}
+.btn.soft{background:var(--peach);color:#805347}
+.btn.smallbtn{font-size:14px;padding:8px 12px}
+.btn-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.progress{height:9px;background:#f0e8e5;border-radius:20px;overflow:hidden}
+.progress-fill{height:100%;background:var(--rose);width:0%;transition:.3s}
+.stage-label{display:flex;justify-content:space-between;
+font-size:13px;color:var(--muted);margin:9px 0}
+.hero{background:linear-gradient(130deg,#fff0e9,#fff8f0,#edf3ff);
+padding:36px;border-radius:25px;text-align:center;margin-bottom:22px}
+.hero h1{margin:12px 0}
+.hero p{max-width:620px;margin:12px auto 20px}
+.pill{display:inline-block;border-radius:30px;background:#fff;
+padding:6px 13px;font-size:13px;color:var(--rose);font-weight:700}
+.book-layout{display:grid;grid-template-columns:1.12fr 1fr;gap:22px}
+.picture{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:15px;
+background:#f2e8e1;display:block}
+.image-wrap{position:relative}
+.image-error{background:#fff1ed;border:2px dashed #e3b2ae;
+padding:25px;text-align:center;border-radius:15px}
+.story-text{font-size:19px;line-height:1.95;white-space:pre-line}
+.story-text strong{color:var(--rose)}
+.scene-heading{margin-bottom:12px}
+.reading-mode{display:flex;gap:9px;flex-wrap:wrap;margin:15px 0}
+.mode{border:2px solid var(--line);border-radius:12px;background:white;
+padding:9px 13px;font-weight:700}
+.mode.active{border-color:var(--rose);background:#fff0f2;color:var(--rose)}
+.word{border-bottom:2px dotted var(--rose);cursor:pointer;
+background:#fff3f4;border-radius:3px;padding:1px 2px}
+.word:focus{outline:2px solid var(--navy)}
+.vocab-box{margin-top:12px;padding:13px;border-radius:12px;
+background:var(--yellow);font-size:15px}
+.question{background:#fffaf6;border:1px solid #f0e4d9;
+border-radius:16px;padding:20px;margin-top:22px}
+.question h3{margin-bottom:9px}
+.option{width:100%;text-align:left;background:white;
+border:2px solid var(--line);border-radius:12px;padding:11px 14px;
+margin:6px 0;color:var(--ink)}
+.option:hover{border-color:var(--pink)}
+.option.selected{border-color:var(--rose);background:#fff0f3}
+.option:disabled{cursor:default;opacity:1}
+.hint-box{background:var(--blue);border-radius:12px;
+padding:14px;margin-top:13px;color:#304b70}
+.feedback{padding:14px;border-radius:12px;margin-top:13px;
+background:#edf4fc;border-left:4px solid var(--navy)}
+.feedback.success{background:#eef7f0;border-color:#6c9a79}
+.feedback.notice{background:#fff4e4;border-color:#d4a05b}
+textarea{width:100%;min-height:100px;resize:vertical;
+border:2px solid var(--line);border-radius:12px;padding:12px;
+background:white;color:var(--ink)}
+textarea:focus{outline:none;border-color:var(--rose)}
+.support{background:#fff4e9;border-radius:13px;padding:14px;margin-top:12px}
+.wordbank{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.wordchip{border:1px solid #e7c8bc;background:white;border-radius:20px;
+padding:5px 12px;font-size:14px}
+.step-list{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:20px 0}
+.step{padding:8px 13px;background:white;border:1px solid var(--line);
+border-radius:20px;font-size:13px;font-weight:700;color:var(--muted)}
+.step.active{background:var(--rose);color:white}
+.step.done{background:var(--blue);color:var(--navy)}
+.summary{background:#fff5ec;border-radius:15px;padding:18px;margin:15px 0}
+.checkline{display:flex;align-items:flex-start;gap:9px;margin:9px 0}
+.checkline input{margin-top:7px;accent-color:var(--rose)}
+.read-aloud-panel{margin-top:12px;background:#f7f3ff;
+border-radius:12px;padding:13px}
+.footer{text-align:center;font-size:13px;color:var(--muted);margin-top:35px}
+@media(max-width:750px){
+ .book-layout{grid-template-columns:1fr}
+ h1{font-size:28px}
+ .hero{padding:24px 15px}
+ .card{padding:18px}
+ .story-text{font-size:18px}
+ header{padding:12px 15px}
+}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="logo">📖 Storytime Studio</div>
+ <div class="header-right">Interactive Read-Aloud · Grades 5–6</div>
+</header>
+
+<main>
+<div id="progressArea" class="hidden">
+ <div class="stage-label">
+  <span id="stageName">Before Reading</span>
+  <span id="progressText">0%</span>
+ </div>
+ <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<section id="welcome">
+ <div class="hero">
+  <span class="pill">An Interactive Picture Book</span>
+  <h1>The Day We Stopped Talking</h1>
+  <p>Two best friends. One misunderstanding. Can they find their way back to each other?</p>
+  <p class="small">Friendship · Kindness · Understanding Others</p>
+  <button class="btn" onclick="goBefore()">Open the Storybook →</button>
+ </div>
+ <div class="card">
+  <h2>✨ Your Reading Adventure</h2>
+  <p>In this story, you will:</p>
+  <p>🔍 Predict what might happen.</p>
+  <p>🎧 Choose to read by yourself or listen to the story.</p>
+  <p>💭 Use clues to understand the characters.</p>
+  <p>🔄 Check and revise your ideas as you read.</p>
+  <p>💌 Think about friendship in your own life.</p>
+  <div class="feedback">
+   <strong>Remember:</strong> A prediction does not have to be correct.
+   Good readers use clues and change their thinking when they discover new information!
+  </div>
+ </div>
+</section>
+
+<section id="before" class="hidden">
+ <div class="card">
+  <div class="eyebrow">Before Reading</div>
+  <h2>🔍 Look & Predict</h2>
+  <p>Read the title: <strong>The Day We Stopped Talking</strong>.</p>
+  <img class="picture" src="assets/scene1.png" alt="Two friends making a poster"
+       onerror="imageError(this,'scene1.png')">
+  <div class="question">
+   <h3>What do you think might happen to Mia and Sophie?</h3>
+   <p class="small">Choose your prediction. There is no wrong answer yet!</p>
+   <div id="beforeOptions"></div>
+   <button class="btn secondary smallbtn" onclick="toggleBeforeReason()">✏️ Explain my prediction (optional)</button>
+   <div id="beforeReasonArea" class="hidden" style="margin-top:12px">
+    <p class="small">I think this because...</p>
+    <textarea id="beforeReason" placeholder="I think... because..."></textarea>
+   </div>
+  </div>
+  <div class="btn-row">
+   <button class="btn" id="startStoryBtn" onclick="startStory()" disabled>
+    Save Prediction & Start Reading →
+   </button>
+  </div>
+ </div>
+</section>
+
+<section id="reading" class="hidden">
+ <div class="step-list" id="sceneSteps"></div>
+ <div class="card">
+  <div class="eyebrow" id="sceneNumber"></div>
+  <h2 class="scene-heading" id="sceneTitle"></h2>
+  <div class="book-layout">
+   <div>
+    <div class="image-wrap">
+     <img class="picture" id="sceneImage" alt="Story illustration">
+    </div>
+    <div class="reading-mode">
+     <button class="mode active" id="readModeBtn" onclick="setMode('read')">📖 Read by Myself</button>
+     <button class="mode" id="listenModeBtn" onclick="setMode('listen')">🎧 Listen & Read</button>
+    </div>
+    <div class="btn-row">
+     <button class="btn secondary smallbtn" onclick="speakStory()">▶ Listen</button>
+     <button class="btn outline smallbtn" onclick="stopSpeech()">■ Stop</button>
+     <button class="btn soft smallbtn" onclick="changeRate()">⚙ Speed: <span id="rateText">1.0×</span></button>
+    </div>
+    <div class="read-aloud-panel">
+     <strong>🎤 Fluency Practice</strong>
+     <p class="small">Listen to the story, then read a short part aloud yourself.</p>
+     <button class="btn secondary smallbtn" onclick="speakPractice()">▶ Hear a Practice Sentence</button>
+     <p id="practiceSentence" style="margin-top:10px"></p>
+     <label class="checkline">
+      <input type="checkbox" id="fluencyCheck" onchange="saveFluency()">
+      <span>I practiced reading this sentence aloud.</span>
+     </label>
+     <p class="small">Try to read clearly and smoothly. You can repeat as many times as you like.</p>
+    </div>
+   </div>
+   <div>
+    <div class="eyebrow">Story Text</div>
+    <div id="storyText" class="story-text"></div>
+    <div id="vocabBox" class="vocab-box hidden"></div>
+    <div class="support">
+     <strong>💡 Vocabulary Helper</strong>
+     <p class="small">Tap the underlined words to check their meanings after guessing from context.</p>
+    </div>
+   </div>
+  </div>
+  <div id="questionArea"></div>
+  <div class="btn-row" style="justify-content:space-between">
+   <button class="btn outline" id="prevBtn" onclick="previousScene()">← Previous</button>
+   <button class="btn" id="nextBtn" onclick="nextScene()" disabled>Next Scene →</button>
+  </div>
+ </div>
+</section>
+
+<section id="after" class="hidden">
+ <div class="card">
+  <div class="eyebrow">After Reading</div>
+  <h2>💌 A Small Act of Kindness</h2>
+  <p>You have finished Mia and Sophie's story!</p>
+  <div class="summary">
+   <strong>Think about the story:</strong>
+   <p>What caused the misunderstanding? What helped the friends understand each other?</p>
+  </div>
+
+  <div class="question">
+   <h3>1. What is the most important lesson of this story?</h3>
+   <div id="lessonOptions"></div>
+   <div id="lessonFeedback"></div>
+  </div>
+
+  <div class="question">
+   <h3>2. What would you do if you had a misunderstanding with a friend?</h3>
+   <p>Write one or two sentences in English.</p>
+   <textarea id="reflection" placeholder="If I had a misunderstanding with my friend, I would..."></textarea>
+   <div class="support">
+    <strong>Need help writing?</strong>
+    <div class="btn-row">
+     <button class="btn secondary smallbtn" onclick="toggleReflectionSupport()">Show / Hide Writing Support</button>
+    </div>
+    <div id="reflectionSupport" class="hidden">
+     <p><strong>Sentence starter:</strong></p>
+     <p>If I had a misunderstanding with my friend, I would ______ because ______.</p>
+     <p><strong>Useful expressions:</strong></p>
+     <div class="wordbank">
+      <button class="wordchip" onclick="insertWord('listen carefully')">listen carefully</button>
+      <button class="wordchip" onclick="insertWord('ask what happened')">ask what happened</button>
+      <button class="wordchip" onclick="insertWord('say sorry')">say sorry</button>
+      <button class="wordchip" onclick="insertWord('understand my friend')">understand my friend</button>
+      <button class="wordchip" onclick="insertWord('talk calmly')">talk calmly</button>
+     </div>
+    </div>
+   </div>
+   <button class="btn secondary" style="margin-top:12px" onclick="checkReflection()">Check My Writing</button>
+   <div id="reflectionFeedback"></div>
+  </div>
+
+  <div class="question">
+   <h3>3. My Reading Reflection</h3>
+   <p>Check what you practiced today.</p>
+   <label class="checkline"><input type="checkbox" class="selfcheck"> I used clues from the story.</label>
+   <label class="checkline"><input type="checkbox" class="selfcheck"> I thought about the characters' feelings.</label>
+   <label class="checkline"><input type="checkbox" class="selfcheck"> I checked or changed my prediction.</label>
+   <label class="checkline"><input type="checkbox" class="selfcheck"> I practiced reading aloud.</label>
+  </div>
+  <div class="btn-row">
+   <button class="btn" onclick="finishReading()">Finish My Reading Adventure →</button>
+  </div>
+ </div>
+</section>
+
+<section id="finish" class="hidden">
+ <div class="hero">
+  <div style="font-size:55px">🌟</div>
+  <h1>Reading Adventure Complete!</h1>
+  <p>You read a story, made predictions, explored feelings, and thought about friendship.</p>
+  <p><strong>Great readers don't just read words. They think, question, and reflect!</strong></p>
+ </div>
+ <div class="card">
+  <h2>📚 My Reading Journey</h2>
+  <div id="finalSummary"></div>
+  <div class="btn-row">
+   <button class="btn secondary" onclick="downloadReflection()">📄 Save My Reflection</button>
+   <button class="btn outline" onclick="restartApp()">↻ Read Again</button>
+  </div>
+ </div>
+</section>
+
+<div class="footer">The Day We Stopped Talking · Original Interactive Reading Activity</div>
+</main>
+
+<script>
+"use strict";
+
+/* =========================
+   STORY DATA
+========================= */
+
+const scenes=[
+{
+ title:"Best Friends",
+ text:`Mia and Sophie were best friends. They did almost everything together. One Monday, their teacher asked them to make a poster for the school festival. They worked all afternoon, drawing stars and colorful balloons.
+
+"It's perfect!" Mia said.
+
+Sophie smiled. "We make a great team!"`,
+ practice:"We make a great team!",
+ vocab:{"festival":"a special event or celebration","perfect":"very good; without mistakes"},
+ question:{
+  type:"choice",
+  title:"What were Mia and Sophie making together?",
+  options:["A birthday card","A school festival poster","A storybook"],
+  correct:1,
+  explanation:"The story says their teacher asked them to make a poster for the school festival.",
+  hints:["Think about what the teacher asked them to do.","Look at the first paragraph.","Find the words 'make a poster'."]
+ }
+},
+{
+ title:"The Torn Poster",
+ text:`The next morning, Mia ran into the classroom. She stopped suddenly. Their beautiful poster was lying on the floor, torn in half.
+
+Sophie was standing beside it, holding a piece of tape.
+
+"Sophie! What happened?" Mia cried.
+
+Sophie opened her mouth, but no words came out.`,
+ practice:"Sophie opened her mouth, but no words came out.",
+ vocab:{"torn":"damaged by being pulled apart","suddenly":"quickly and unexpectedly"},
+ question:{
+  type:"choice",
+  title:"What did Mia see when she entered the classroom?",
+  options:["Sophie making a new poster","Their poster torn in half","A poster hanging on the wall"],
+  correct:1,
+  explanation:"Mia saw their poster lying on the floor, torn in half.",
+  hints:["Look at the first paragraph.","What happened to the poster?","Find the phrase 'torn in half'."]
+ }
+},
+{
+ title:"The Argument",
+ text:`"You ruined our poster!" Mia shouted.
+
+"I didn't—" Sophie began.
+
+"I worked so hard on it!" Mia interrupted.
+
+Sophie looked down at the floor. She wanted to explain, but Mia had already turned away.
+
+For the first time, the two friends walked to class without speaking.`,
+ practice:"She wanted to explain, but Mia had already turned away.",
+ vocab:{"ruined":"damaged or spoiled something","interrupted":"stopped someone while they were speaking","explain":"make something clear"},
+ question:{
+  type:"inference",
+  title:"Why couldn't Sophie explain what happened?",
+  options:[
+   "Mia interrupted her and turned away.",
+   "Sophie forgot how to speak.",
+   "Sophie didn't care about the poster."
+  ],
+  correct:0,
+  explanation:"Mia interrupted Sophie before she could finish. The story gives us a clue: 'She wanted to explain, but Mia had already turned away.'",
+  hints:[
+   "Look at what Mia did when Sophie started speaking.",
+   "Find the word 'interrupted'.",
+   "Complete: Sophie couldn't explain because Mia ______."
+  ]
+ }
+},
+{
+ title:"The Silence",
+ text:`At lunch, Mia sat with her other friends. Sophie sat alone by the window.
+
+Mia tried to enjoy her lunch, but something felt wrong. She looked across the room.
+
+Sophie was staring at her food.
+
+Mia missed her best friend. But she was still too angry to say hello.`,
+ practice:"Mia missed her best friend.",
+ vocab:{"alone":"without other people","staring":"looking at something for a long time"},
+ question:{
+  type:"feelings",
+  title:"How does Mia feel? Choose TWO feelings.",
+  options:["Angry","Lonely","Excited","Proud","Relaxed"],
+  correct:[0,1],
+  explanation:"Mia is still angry, but she also misses Sophie. People can have more than one feeling at the same time.",
+  hints:[
+   "Look at the last two sentences.",
+   "Mia misses Sophie, but she is still too angry to say hello.",
+   "Choose one feeling about the argument and one about missing her friend."
+  ]
+ }
+},
+{
+ title:"A New Clue",
+ text:`After school, Mia went back to the classroom to get her bag.
+
+On Sophie's desk, she noticed some tape, colored pencils, and a note.
+
+The note said, "Fix the poster before Mia sees it."
+
+Mia frowned. Why would Sophie want to fix the poster if she had ruined it on purpose?`,
+ practice:"Why would Sophie want to fix the poster?",
+ vocab:{"noticed":"saw or became aware of something","frowned":"showed worry or confusion with the face","on purpose":"intentionally; not by accident"},
+ question:{
+  type:"thinkagain",
+  title:"Think Again! Did Sophie tear the poster on purpose?",
+  options:[
+   "Yes, she definitely did it on purpose.",
+   "Maybe not. The note suggests she wanted to help.",
+   "There is no reason to think about the note."
+  ],
+  correct:1,
+  explanation:"The note is a new clue. It suggests Sophie wanted to fix the poster. We cannot know everything yet, but we have a reason to question Mia's first assumption.",
+  hints:[
+   "Read the note again.",
+   "Why would Sophie prepare tape and colored pencils?",
+   "Does the new clue support or challenge Mia's first idea?"
+  ]
+ }
+},
+{
+ title:"What Really Happened",
+ text:`Just then, their teacher walked in.
+
+"Oh, Mia! Did Sophie tell you what happened yesterday?"
+
+Mia shook her head.
+
+"The window was open, and the wind blew your poster off the wall. Sophie tried to catch it, but the paper tore. She stayed after school to fix it."
+
+Mia felt her face grow warm.`,
+ practice:"Sophie tried to catch it, but the paper tore.",
+ vocab:{"blew":"past tense of blow; moved something with air","catch":"stop and hold something moving","shook":"moved from side to side"},
+ question:{
+  type:"choice",
+  title:"What actually caused the poster to tear?",
+  options:[
+   "Sophie tore it because she was angry.",
+   "The wind blew it down, and it tore when Sophie tried to catch it.",
+   "Mia accidentally stepped on it."
+  ],
+  correct:1,
+  explanation:"The teacher explains that the wind blew the poster off the wall and it tore when Sophie tried to catch it.",
+  hints:[
+   "What was happening near the window?",
+   "What did Sophie try to do?",
+   "Find the words 'wind' and 'catch'."]
+ }
+},
+{
+ title:"Let's Talk",
+ text:`Mia found Sophie sitting on a bench.
+
+"I'm sorry," Mia whispered. "I should have listened to you."
+
+Sophie looked at her. "I was really hurt when you didn't believe me."
+
+Mia nodded. "I understand now. Can we start again?"
+
+Sophie smiled a little. "I'd like that."`,
+ practice:"I should have listened to you.",
+ vocab:{"whispered":"spoke very quietly","believe":"think that someone is telling the truth"},
+ question:{
+  type:"inference",
+  title:"Why was Sophie hurt?",
+  options:[
+   "Because Mia did not believe her or listen to her.",
+   "Because Mia did not like the poster's colors.",
+   "Because Sophie wanted to sit somewhere else."
+  ],
+  correct:0,
+  explanation:"Sophie says, 'I was really hurt when you didn't believe me.' The problem was not only the poster. It was also about trust and listening.",
+  hints:[
+   "Look at Sophie's words.",
+   "Find the sentence with 'didn't believe me'.",
+   "Think about how you feel when a friend does not listen."
+  ]
+ }
+},
+{
+ title:"A New Beginning",
+ text:`The next day, Mia and Sophie made a new poster together.
+
+This time, they added something special at the bottom.
+
+"Good friends don't always agree," Mia read aloud.
+
+"But they always try to understand," Sophie finished.
+
+They looked at each other and smiled. Their friendship felt stronger than before.`,
+ practice:"Good friends don't always agree, but they always try to understand.",
+ vocab:{"agree":"have the same opinion","understand":"know what someone means or feels"},
+ question:{
+  type:"choice",
+  title:"What helped Mia and Sophie become friends again?",
+  options:[
+   "They decided never to disagree again.",
+   "They listened, apologized, and tried to understand each other.",
+   "They forgot everything without talking."
+  ],
+  correct:1,
+  explanation:"The story shows that listening, apologizing, and understanding can help repair a friendship.",
+  hints:[
+   "Think about Scene 7.",
+   "What did Mia say to Sophie?",
+   "Look for actions that show listening and understanding."
+  ]
+ }
+}
+];
+
+const beforeChoices=[
+ "They will have a misunderstanding.",
+ "They will move to different schools.",
+ "They will win a prize together.",
+ "Something else might happen."
+];
+
+const lessonChoices=[
+ "Good friends never disagree.",
+ "Listening and understanding can help solve misunderstandings.",
+ "It is best to stop talking when you feel angry."
+];
+
+/* =========================
+   APP STATE
+========================= */
+
+let currentScene=0;
+let selectedBefore=null;
+let answers={};
+let hintLevels={};
+let attempts={};
+let completed={};
+let fluency={};
+let readingMode="read";
+let speechRate=1;
+let currentUtterance=null;
+let lessonAnswer=null;
+
+const $=id=>document.getElementById(id);
+
+function escapeHTML(str){
+ return String(str).replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ })[c]);
+}
+
+function showSection(id){
+ stopSpeech();
+ ["welcome","before","reading","after","finish"].forEach(x=>{
+  $(x).classList.toggle("hidden",x!==id);
+ });
+ $("progressArea").classList.toggle("hidden",id==="welcome");
+ window.scrollTo({top:0,behavior:"smooth"});
+ updateProgress(id);
+}
+
+function updateProgress(section){
+ let percent=0,label="Before Reading";
+ if(section==="before"){percent=5;label="Before Reading";}
+ if(section==="reading"){
+  percent=10+Math.round((currentScene/8)*75);
+  label="During Reading · Scene "+(currentScene+1)+"/8";
+ }
+ if(section==="after"){percent=90;label="After Reading";}
+ if(section==="finish"){percent=100;label="Completed";}
+ $("stageName").textContent=label;
+ $("progressText").textContent=percent+"%";
+ $("progressFill").style.width=percent+"%";
+}
+
+function imageError(img,name){
+ img.style.display="none";
+ if(img.nextElementSibling?.classList.contains("image-error"))return;
+ const div=document.createElement("div");
+ div.className="image-error";
+ div.textContent="Image not found: assets/"+name+
+ ". Please check the file name and assets folder.";
+ img.after(div);
+}
+
+function goBefore(){
+ renderBefore();
+ showSection("before");
+}
+
+function renderBefore(){
+ $("beforeOptions").innerHTML=beforeChoices.map((c,i)=>
+  `<button class="option ${selectedBefore===i?'selected':''}"
+  onclick="chooseBefore(${i})">${escapeHTML(c)}</button>`).join("");
+ $("startStoryBtn").disabled=selectedBefore===null;
+}
+
+function chooseBefore(i){
+ selectedBefore=i;
+ renderBefore();
+}
+
+function toggleBeforeReason(){
+ $("beforeReasonArea").classList.toggle("hidden");
+}
+
+function startStory(){
+ if(selectedBefore===null)return;
+ currentScene=0;
+ renderScene();
+ showSection("reading");
+}
+
+function renderSteps(){
+ $("sceneSteps").innerHTML=scenes.map((s,i)=>{
+  const cls=i===currentScene?"active":completed[i]?"done":"";
+  return `<span class="step ${cls}">${completed[i]?"✓ ":""}${i+1}</span>`;
+ }).join("");
+}
+
+function renderScene(){
+ stopSpeech();
+ const s=scenes[currentScene];
+ $("sceneNumber").textContent="Scene "+(currentScene+1)+" of 8";
+ $("sceneTitle").textContent=s.title;
+
+ const img=$("sceneImage");
+ img.style.display="block";
+ const old=img.parentElement.querySelector(".image-error");
+ if(old)old.remove();
+ img.src="assets/scene"+(currentScene+1)+".png";
+ img.alt="Illustration for "+s.title;
+ img.onerror=()=>imageError(img,"scene"+(currentScene+1)+".png");
+
+ $("storyText").innerHTML=renderVocabulary(s.text,s.vocab);
+ $("vocabBox").classList.add("hidden");
+ $("vocabBox").textContent="";
+ $("practiceSentence").textContent='"'+s.practice+'"';
+ $("fluencyCheck").checked=!!fluency[currentScene];
+
+ renderQuestion();
+ renderSteps();
+ setMode(readingMode);
+ $("prevBtn").disabled=currentScene===0;
+ $("nextBtn").disabled=!completed[currentScene];
+ $("nextBtn").textContent=currentScene===7?"After Reading →":"Next Scene →";
+ updateProgress("reading");
+}
+
+function renderVocabulary(text,vocab){
+ let html=escapeHTML(text);
+ const words=Object.keys(vocab).sort((a,b)=>b.length-a.length);
+ words.forEach(word=>{
+  const re=new RegExp("\\b("+word.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")\\b","gi");
+  html=html.replace(re,(match,_,offset,whole)=>{
+   // Avoid replacing words inside previously generated HTML.
+   // This is handled more reliably below using tokenization instead.
+   return match;
+  });
+ });
+ // Build markup from original text without touching generated tags.
+ const pattern=new RegExp("\\b("+words.map(w=>w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|")+")\\b","gi");
+ let result="",last=0,match;
+ while((match=pattern.exec(text))!==null){
+  result+=escapeHTML(text.slice(last,match.index));
+  const word=match[0];
+  const key=words.find(w=>w.toLowerCase()===word.toLowerCase());
+  result+=`<span class="word" role="button" tabindex="0"
+    onclick="showWord('${key}')"
+    onkeydown="if(event.key==='Enter')showWord('${key}')">${escapeHTML(word)}</span>`;
+  last=match.index+word.length;
+ }
+ result+=escapeHTML(text.slice(last));
+ return result;
+}
+
+function showWord(word){
+ const meaning=scenes[currentScene].vocab[word];
+ $("vocabBox").innerHTML="<strong>"+escapeHTML(word)+
+ "</strong>: "+escapeHTML(meaning);
+ $("vocabBox").classList.remove("hidden");
+}
+
+/* =========================
+   AUDIO
+========================= */
+
+function stopSpeech(){
+ if("speechSynthesis" in window)window.speechSynthesis.cancel();
+ currentUtterance=null;
+}
+
+function speak(text){
+ stopSpeech();
+ if(!("speechSynthesis" in window)){
+  alert("Speech is not supported in this browser.");
+  return;
+ }
+ const utterance=new SpeechSynthesisUtterance(text);
+ utterance.lang="en-US";
+ utterance.rate=speechRate;
+ utterance.pitch=1;
+ const voices=window.speechSynthesis.getVoices();
+ const english=voices.find(v=>v.lang==="en-US")||
+ voices.find(v=>v.lang.startsWith("en"));
+ if(english)utterance.voice=english;
+ currentUtterance=utterance;
+ window.speechSynthesis.speak(utterance);
+}
+
+function speakStory(){speak(scenes[currentScene].text);}
+function speakPractice(){speak(scenes[currentScene].practice);}
+
+function changeRate(){
+ const rates=[1,.85,.7];
+ const i=rates.indexOf(speechRate);
+ speechRate=rates[(i+1)%rates.length];
+ $("rateText").textContent=speechRate.toFixed(2).replace(/0$/,"")+"×";
+}
+
+function setMode(mode){
+ readingMode=mode;
+ $("readModeBtn").classList.toggle("active",mode==="read");
+ $("listenModeBtn").classList.toggle("active",mode==="listen");
+ if(mode==="listen")speakStory();
+ else stopSpeech();
+}
+
+function saveFluency(){
+ fluency[currentScene]=$("fluencyCheck").checked;
+}
+
+/* =========================
+   QUESTIONS
+========================= */
+
+function renderQuestion(){
+ const s=scenes[currentScene],q=s.question;
+ const idx=currentScene;
+ if(hintLevels[idx]===undefined)hintLevels[idx]=0;
+ if(attempts[idx]===undefined)attempts[idx]=0;
+
+ let extra="";
+ if(q.type==="thinkagain"){
+  extra=`<div class="summary">
+   <strong>Remember your first prediction:</strong>
+   <p>${escapeHTML(beforeChoices[selectedBefore]||"Your first prediction")}</p>
+   <p class="small">Now you have a new clue. You can keep or change your idea.</p>
+  </div>`;
+ }
+ if(q.type==="feelings"){
+  extra=`<p class="small">Choose exactly TWO answers.</p>`;
+ }
+
+ const saved=answers[idx];
+ const selected=Array.isArray(saved)?saved:saved===undefined?[]:[saved];
+
+ const options=q.options.map((o,i)=>
+  `<button class="option ${selected.includes(i)?'selected':''}"
+  id="option-${i}" onclick="selectAnswer(${i})"
+  ${completed[idx]?'disabled':''}>
+  ${escapeHTML(o)}</button>`).join("");
+
+ $("questionArea").innerHTML=`
+ <div class="question">
+  <div class="eyebrow">${questionLabel(q.type)}</div>
+  <h3>${escapeHTML(q.title)}</h3>
+  ${extra}
+  <div id="optionsContainer">${options}</div>
+  <div class="btn-row">
+   <button class="btn secondary smallbtn" onclick="showHint()" ${completed[idx]?'disabled':''}>
+    💡 Need a Hint? (${hintLevels[idx]}/3)
+   </button>
+   <button class="btn smallbtn" id="checkAnswerBtn"
+    onclick="checkAnswer()" ${completed[idx]?'disabled':''}>
+    Check My Thinking
+   </button>
+  </div>
+  <div id="hintArea"></div>
+  <div id="answerFeedback"></div>
+ </div>`;
+
+ if(hintLevels[idx]>0)renderHints();
+ if(completed[idx])renderCompletedFeedback();
+}
+
+function questionLabel(type){
+ return ({
+  choice:"Comprehension Check",
+  inference:"Read Between the Lines",
+  feelings:"Understanding Feelings",
+  thinkagain:"Think Again"
+ })[type]||"Reading Question";
+}
+
+function selectAnswer(i){
+ if(completed[currentScene])return;
+ const q=scenes[currentScene].question;
+ if(q.type==="feelings"){
+  let a=Array.isArray(answers[currentScene])?[...answers[currentScene]]:[];
+  if(a.includes(i))a=a.filter(x=>x!==i);
+  else if(a.length<2)a.push(i);
+  answers[currentScene]=a;
+ }else{
+  answers[currentScene]=i;
+ }
+ q.options.forEach((_,j)=>{
+  const el=$("option-"+j);
+  if(el)el.classList.toggle("selected",
+   Array.isArray(answers[currentScene])?
+   answers[currentScene].includes(j):answers[currentScene]===j);
+ });
+ $("answerFeedback").innerHTML="";
+}
+
+function showHint(){
+ const i=currentScene;
+ if(completed[i])return;
+ hintLevels[i]=Math.min(3,hintLevels[i]+1);
+ renderHints();
+ const btn=$("questionArea").querySelector(".btn.secondary");
+ if(btn)btn.textContent="💡 Need a Hint? ("+hintLevels[i]+"/3)";
+}
+
+function renderHints(){
+ const q=scenes[currentScene].question;
+ const count=hintLevels[currentScene];
+ $("hintArea").innerHTML=count?
+ `<div class="hint-box"><strong>Helpful Clues</strong>
+ ${q.hints.slice(0,count).map((h,i)=>
+ `<p><strong>Hint ${i+1}:</strong> ${escapeHTML(h)}</p>`).join("")}</div>`:"";
+}
+
+function isCorrect(q,a){
+ if(q.type==="feelings"){
+  return Array.isArray(a)&&a.length===2&&
+   q.correct.every(x=>a.includes(x));
+ }
+ return a===q.correct;
+}
+
+function checkAnswer(){
+ const idx=currentScene,q=scenes[idx].question;
+ const a=answers[idx];
+ if(a===undefined||(Array.isArray(a)&&a.length!==2)){
+  $("answerFeedback").innerHTML=
+   `<div class="feedback notice">Please ${q.type==="feelings"?"choose two answers":"choose an answer"} first.</div>`;
+  return;
+ }
+ attempts[idx]++;
+ if(isCorrect(q,a)){
+  completed[idx]=true;
+  $("answerFeedback").innerHTML=
+   `<div class="feedback success"><strong>Well done!</strong><p>${escapeHTML(q.explanation)}</p>
+   <p class="small">You used information from the story to support your understanding.</p></div>`;
+  $("nextBtn").disabled=false;
+  $("questionArea").querySelectorAll(".option").forEach(x=>x.disabled=true);
+  $("checkAnswerBtn").disabled=true;
+  renderSteps();
+ }else{
+  const feedback=attempts[idx]>=2?
+   "Try looking at the relevant sentence again. You can use the hints to help you.":
+   "Not quite. Check the clues in the story and try again.";
+  $("answerFeedback").innerHTML=
+   `<div class="feedback notice"><strong>Let's think again.</strong><p>${feedback}</p></div>`;
+  if(attempts[idx]>=2&&hintLevels[idx]<2){
+   hintLevels[idx]=2;
+   renderHints();
+  }
+ }
+}
+
+function renderCompletedFeedback(){
+ const q=scenes[currentScene].question;
+ $("answerFeedback").innerHTML=
+ `<div class="feedback success"><strong>Reading Check Completed!</strong>
+ <p>${escapeHTML(q.explanation)}</p></div>`;
+}
+
+function nextScene(){
+ if(!completed[currentScene])return;
+ if(currentScene===7){
+  renderAfter();
+  showSection("after");
+ }else{
+  currentScene++;
+  renderScene();
+  window.scrollTo({top:0,behavior:"smooth"});
+ }
+}
+
+function previousScene(){
+ if(currentScene===0)return;
+ currentScene--;
+ renderScene();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* =========================
+   AFTER READING
+========================= */
+
+function renderAfter(){
+ $("lessonOptions").innerHTML=lessonChoices.map((c,i)=>
+ `<button class="option ${lessonAnswer===i?'selected':''}"
+ onclick="chooseLesson(${i})">${escapeHTML(c)}</button>`).join("");
+}
+
+function chooseLesson(i){
+ lessonAnswer=i;
+ renderAfter();
+ $("lessonFeedback").innerHTML=i===1?
+ `<div class="feedback success"><strong>Great thinking!</strong>
+ Listening and understanding help friends work through misunderstandings.</div>`:
+ `<div class="feedback notice">Think about Mia and Sophie.
+ Did they always agree? What helped them become friends again?</div>`;
+}
+
+function toggleReflectionSupport(){
+ $("reflectionSupport").classList.toggle("hidden");
+}
+
+function insertWord(word){
+ const area=$("reflection");
+ const start=area.selectionStart,end=area.selectionEnd;
+ const v=area.value;
+ area.value=v.slice(0,start)+word+v.slice(end);
+ area.focus();
+ area.selectionStart=area.selectionEnd=start+word.length;
+}
+
+function checkReflection(){
+ const text=$("reflection").value.trim();
+ if(!text){
+  $("reflectionFeedback").innerHTML=
+  `<div class="feedback notice">Write at least one sentence about what you would do.</div>`;
+  return;
+ }
+ const words=text.split(/\s+/).filter(Boolean);
+ const hasAction=/listen|ask|talk|sorry|apolog|understand|explain|help|calm|speak|tell|wait|forgiv|check/i.test(text);
+ let message="";
+ if(words.length<6){
+  message="Can you add more detail? Try explaining what you would do.";
+ }else if(!hasAction){
+  message="You shared an idea. Check whether your answer clearly explains an action you would take.";
+ }else{
+  message="You described a possible action. Now check whether your sentence is clear and explains your thinking.";
+ }
+ $("reflectionFeedback").innerHTML=
+ `<div class="feedback"><strong>Writing Check</strong>
+ <p>${message}</p>
+ <p class="small">This is a basic writing prompt, not an automatic grammar or meaning assessment.
+ Read your answer again before finishing.</p></div>`;
+}
+
+function finishReading(){
+ const checks=[...document.querySelectorAll(".selfcheck")];
+ const count=checks.filter(x=>x.checked).length;
+ const reflection=$("reflection").value.trim();
+
+ $("finalSummary").innerHTML=`
+ <div class="summary">
+  <p><strong>My First Prediction</strong></p>
+  <p>${escapeHTML(beforeChoices[selectedBefore]||"")}</p>
+  ${$("beforeReason").value.trim()?
+   `<p class="small">${escapeHTML($("beforeReason").value.trim())}</p>`:""}
+ </div>
+ <div class="summary">
+  <p><strong>My Personal Response</strong></p>
+  <p>${escapeHTML(reflection||"I will think about this next time.")}</p>
+ </div>
+ <div class="summary">
+  <p><strong>Reading Practice</strong></p>
+  <p>Scenes completed: ${Object.values(completed).filter(Boolean).length}/8</p>
+  <p>Read-aloud practice marked: ${Object.values(fluency).filter(Boolean).length}/8</p>
+  <p>Self-reflection items checked: ${count}/4</p>
+ </div>
+ <p class="small">These are participation records, not a standardized reading score.</p>`;
+ showSection("finish");
+}
+
+function downloadReflection(){
+ const content=[
+  "THE DAY WE STOPPED TALKING",
+  "My Reading Reflection",
+  "",
+  "First Prediction:",
+  beforeChoices[selectedBefore]||"",
+  $("beforeReason").value.trim(),
+  "",
+  "My Personal Response:",
+  $("reflection").value.trim(),
+  "",
+  "Scenes Completed: "+Object.values(completed).filter(Boolean).length+"/8",
+  "Fluency Practice: "+Object.values(fluency).filter(Boolean).length+"/8"
+ ].join("\n");
+
+ const blob=new Blob([content],{type:"text/plain;charset=utf-8"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;
+ a.download="My_Reading_Reflection.txt";
+ document.body.appendChild(a);
+ a.click();
+ a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+function restartApp(){
+ stopSpeech();
+ currentScene=0;selectedBefore=null;answers={};hintLevels={};
+ attempts={};completed={};fluency={};lessonAnswer=null;
+ readingMode="read";speechRate=1;
+ $("beforeReason").value="";
+ $("reflection").value="";
+ $("beforeReasonArea").classList.add("hidden");
+ $("reflectionSupport").classList.add("hidden");
+ document.querySelectorAll(".selfcheck").forEach(x=>x.checked=false);
+ showSection("welcome");
+}
+
+window.addEventListener("beforeunload",stopSpeech);
+</script>
+</body>
+</html>
